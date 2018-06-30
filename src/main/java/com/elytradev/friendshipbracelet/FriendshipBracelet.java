@@ -6,6 +6,7 @@ import com.elytradev.friendshipbracelet.proxy.CommonProxy;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
@@ -19,7 +20,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 
-@Mod(modid = FriendshipBracelet.modId, name = FriendshipBracelet.name, version = FriendshipBracelet.version, dependencies = "required-after:Baubles@[1.5.2,)")
+@Mod(modid = FriendshipBracelet.modId, name = FriendshipBracelet.name, version = FriendshipBracelet.version)
 public class FriendshipBracelet {
     public static final String modId = "friendshipbracelet";
     public static final String name  = "Friendship Bracelet";
@@ -55,6 +56,9 @@ public class FriendshipBracelet {
             NBTTagCompound tags = new NBTTagCompound();
             tags.setUniqueId("PlayerID", e.player.getPersistentID());
             result.setTagCompound(tags);
+            TextComponentTranslation bracelet = new TextComponentTranslation("item.friendship_bracelet.rename");
+            String name = e.player.getName()+bracelet.getUnformattedComponentText();
+            result.setStackDisplayName(name);
         }
     }
 

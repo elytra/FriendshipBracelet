@@ -35,19 +35,23 @@ public class ItemFriendshipBracelet extends ItemBase implements IBauble {
 
     @Override
     public boolean canEquip(ItemStack stack, EntityLivingBase player) {
+        if (tags == null) return false;
         return player.getPersistentID() == tags.getUniqueId("PlayerID");
     }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         ItemStack item = player.getHeldItem(hand);
-
+        if (item.getTagCompound() == null) item.setTagCompound(new NBTTagCompound());
         UUID id = item.getTagCompound().getUniqueId("PlayerID");
         MinecraftServer server = world.getMinecraftServer();
 
         if (!world.isRemote) {
             if (id == null) {
                 item.getTagCompound().setUniqueId("PlayerID", player.getPersistentID());
+                TextComponentTranslation bracelet = new TextComponentTranslation("item.friendship_bracelet.rename");
+                String name = player.getName()+bracelet.getUnformattedComponentText();
+                item.setStackDisplayName(name);
                 return new ActionResult<>(EnumActionResult.FAIL, item);
             } else if (id == player.getPersistentID()) {
                 equipBauble(world, player, hand);
