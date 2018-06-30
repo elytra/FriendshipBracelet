@@ -3,6 +3,7 @@ package com.elytradev.friendshipbracelet;
 import com.elytradev.friendshipbracelet.client.FBTab;
 import com.elytradev.friendshipbracelet.item.ModItems;
 import com.elytradev.friendshipbracelet.proxy.CommonProxy;
+import com.elytradev.friendshipbracelet.util.FBRecipes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,7 +21,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 
-@Mod(modid = FriendshipBracelet.modId, name = FriendshipBracelet.name, version = FriendshipBracelet.version)
+@Mod(modid = FriendshipBracelet.modId, name = FriendshipBracelet.name, version = FriendshipBracelet.version, dependencies = "required-after:baubles@[1.5.2,)")
 public class FriendshipBracelet {
     public static final String modId = "friendshipbracelet";
     public static final String name  = "Friendship Bracelet";
@@ -45,12 +46,12 @@ public class FriendshipBracelet {
         FBLog.info(name + " is loading!");
 
         MinecraftForge.EVENT_BUS.register(proxy);
+        MinecraftForge.EVENT_BUS.register(FBRecipes.class);
         MinecraftForge.EVENT_BUS.register(this);
-
     }
 
     @SubscribeEvent
-    public void onItemCraft(PlayerEvent.ItemCraftedEvent e) {
+    public static void onItemCraft(PlayerEvent.ItemCraftedEvent e) {
         ItemStack result = e.crafting;
         if (result == new ItemStack(ModItems.FRIENDSHIP_BRACELET, 1)) {
             NBTTagCompound tags = new NBTTagCompound();

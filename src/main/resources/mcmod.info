@@ -1,19 +1,18 @@
 [
   {
-    "modid": "infraredstone",
-    "name": "InfraRedstone",
-    "description": "A better analog redstone replacement!",
+    "modid": "friendshipbracelet",
+    "name": "Friendship Bracelet",
+    "description": "Make friends and teleport to them!",
     "version": "${version}",
     "mcversion": "${mcversion}",
     "url": "",
     "updateUrl": "",
     "authorList": [
-      "b0undarybreaker",
-      "Falkreon"
+      "b0undarybreaker"
     ],
     "credits": "",
     "logoFile": "",
     "screenshots": [],
-    "dependencies": []
+    "dependencies": ["Baubles"]
   }
 ]

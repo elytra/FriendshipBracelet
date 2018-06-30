@@ -35,6 +35,6 @@ repositories {
 }
 
 dependencies {
-    deobfCompile name: "Baubles", version: "1.12-1.5.2"
+    compile name: "Baubles", version: "1.12-1.5.2"
 }
 }
