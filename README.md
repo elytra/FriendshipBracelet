@@ -1,30 +1,14 @@
 <img src="https://unascribed.com/f/a231ace4_trumpet.png" align="right" width="180px"/>
 
-# Elytra Project Skeleton
+# Friendship Bracelet
 
-[>> Downloads <<](https://github.com/elytra/Skeleton/releases)
+[>> Downloads <<](https://github.com/elytra/FriendshipBracelet/releases)
 
-*Spooky scary skeletons*
+*FRIENDSHIP!!!*
 
 **This mod is open source and under a permissive license.** All Elytra mods are,
 and as such, can be included in any modpack on any platform without prior
 permission. We appreciate hearing about people using our mods, but you do not
 need to ask to use them. See the [LICENSE file](LICENSE) for more details.
 
-**Notice**: The issue template and downloads link on this project, as
-well as the open source modpack notice, are here for ease of inclusion
-in Skeleton-derived mods, and do not neccessarily apply to Skeleton itself.
-
-A generic Gradle buildfile and a fairly sane project structure to make
-getting started easier. Rather than making a new empty directory and
-copying your Forge dev files over, just download a copy of this repository.
-
-**Note**: Previous versions of this readme recommended cloning the repo and
-keeping the history; this is likely to cause issues and probably shouldn't
-be attempted.
-
-Make sure to replace the README.md and decide if the MIT License is what
-you want to use. If it is, replace the copyright declaration to have your
-name instead of unascribed's.
-
-Don't edit build.gradle, just edit project.gradle.
+Friendship Bracelet is a mod to replace /tpa and similar commands on multiplayer servers. Upon creating, a friendship bracelet is bound to the person who crafted it. If the crafting was automated, it can be bound by right-clicking with it in hand. If a friendship bracelet is bound to your UUID, you can equip it to a ring bauble slot. If you give a friendship bracelet to someone, they can hold right-click while holding the bracelet to teleport to you any time you are wearing the bracelet.

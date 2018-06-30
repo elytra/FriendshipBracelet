@@ -72,7 +72,7 @@ public class ItemFriendshipBracelet extends ItemBase implements IBauble {
         MinecraftServer server = world.getMinecraftServer();
         if (!world.isRemote) {
             EntityPlayer to = server.getPlayerList().getPlayerByUUID(id);
-            entityLiving.attemptTeleport(to.posX, to.posY, to.posZ);
+            if (isAcceptingTeleports(to)) entityLiving.attemptTeleport(to.posX, to.posY, to.posZ);
         }
         return itemStack;
     }
@@ -80,6 +80,14 @@ public class ItemFriendshipBracelet extends ItemBase implements IBauble {
     @Override
     public BaubleType getBaubleType(ItemStack itemStack) {
         return BaubleType.RING;
+    }
+
+    private boolean isAcceptingTeleports(EntityPlayer player) {
+        IBaublesItemHandler baubles = BaublesApi.getBaublesHandler(player);
+        for(int i = 0; i < baubles.getSlots(); i++) {
+            if (baubles.getStackInSlot(i) == new ItemStack(ModItems.FRIENDSHIP_BRACELET, 1)) return true;
+        }
+        return false;
     }
 
     private void equipBauble(World world, EntityPlayer player, EnumHand hand) {

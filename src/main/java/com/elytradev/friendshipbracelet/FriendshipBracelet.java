@@ -1,7 +1,5 @@
 package com.elytradev.friendshipbracelet;
 
-import com.elytradev.concrete.inventory.IContainerInventoryHolder;
-import com.elytradev.concrete.inventory.gui.client.ConcreteGui;
 import com.elytradev.friendshipbracelet.client.FBTab;
 import com.elytradev.friendshipbracelet.item.ModItems;
 import com.elytradev.friendshipbracelet.proxy.CommonProxy;
