@@ -1,0 +1,10 @@
+#items
+item.friendship_bracelet.name=Friendship Bracelet
+
+#tooltips
+
+#messages
+msg.fb.notOnline=Player not online!
+
+#misc
+itemGroup.friendshipbracelet=Friendship Bracelets

@@ -1,0 +1,40 @@
+// See https://github.com/elytra/Skeleton/wiki for what all these values mean
+
+ext {
+	group = 'com.elytradev'
+	projectName = 'FriendshipBracelet'
+
+	useElytraVersionFormat = true
+	version = '1'
+
+	concreteVersion = '0.5.40'
+	concreteModules = [ 'common' ]
+
+	coremod = null
+	miniVersion = null
+
+	language = 'java'
+
+	forge = '1.12.2-14.23.3.2655'
+	mappings = 'snapshot_20170908'
+
+	enforceLicenseHeaders = false
+
+	verbose = false
+}
+
+if (!ext.early) {
+repositories {
+	// the skeleton already defines mavenCentral, jcenter, and the Elytra repo
+	// will also have Shadowfacts' maven if the language is set to kotlin
+    ivy {
+        //Resolves baubles and jankson
+        name "endless.blue dependency mirror";
+        artifactPattern "https://endless.blue/files/ivy/[module]-[revision].[ext]"
+    }
+}
+
+dependencies {
+    deobfCompile name: "Baubles", version: "1.12-1.5.2"
+}
+}
