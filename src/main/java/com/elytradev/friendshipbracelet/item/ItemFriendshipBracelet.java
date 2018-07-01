@@ -62,30 +62,38 @@ public class ItemFriendshipBracelet extends ItemBase implements IBauble {
             } else if (server.getPlayerList().getPlayerByUUID(id) == null) {
                 player.sendStatusMessage(new TextComponentTranslation("msg.fb.notOnline"), true);
                 return new ActionResult<>(EnumActionResult.FAIL, item);
-            } else return new ActionResult<>(EnumActionResult.SUCCESS, item);
+            } else {
+                player.setActiveHand(hand);
+                return new ActionResult<>(EnumActionResult.PASS, item);
+            }
         }
 
-        return new ActionResult<>(EnumActionResult.FAIL, item);
+        return new ActionResult<>(EnumActionResult.PASS, item);
     }
 
     @Override
     public int getMaxItemUseDuration(ItemStack itemStack) {
-        return 1000;
+        return 72000;
     }
 
-    @Override
-    public ItemStack onItemUseFinish(ItemStack itemStack, World world, EntityLivingBase entityLiving) {
-        UUID id = itemStack.getTagCompound().getUniqueId("PlayerID");
-        MinecraftServer server = world.getMinecraftServer();
-        if (!world.isRemote) {
-            EntityPlayer to = server.getPlayerList().getPlayerByUUID(id);
-            if (isAcceptingTeleports(to)) entityLiving.attemptTeleport(to.posX, to.posY, to.posZ);
-            else {
-                EntityPlayer player = (EntityPlayer)entityLiving;
-                player.sendStatusMessage(new TextComponentTranslation("msg.fb.notAccepting"), true);
+    public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft) {
+        FBLog.info(timeLeft);
+        EntityPlayer player = (EntityPlayer)entityLiving;
+        if (this.getMaxItemUseDuration(stack)-timeLeft >= 1000) {
+            FBLog.info("Teleporting!");
+            UUID id = stack.getTagCompound().getUniqueId("PlayerID");
+            MinecraftServer server = world.getMinecraftServer();
+            if (!world.isRemote) {
+                EntityPlayer to = server.getPlayerList().getPlayerByUUID(id);
+                if (isAcceptingTeleports(to)) {
+                    player.attemptTeleport(to.posX, to.posY, to.posZ);
+                    player.getCooldownTracker().getCooldown(this, 300);
+                }
+                else {
+                    player.sendStatusMessage(new TextComponentTranslation("msg.fb.notAccepting"), true);
+                }
             }
         }
-        return itemStack;
     }
 
     @Override
