@@ -31,7 +31,7 @@ public class ItemFriendshipBracelet extends ItemBase implements IBauble {
 
     @Override
     public EnumAction getItemUseAction(ItemStack stack) {
-        return (stack.getTagCompound().getUniqueId("PlayerID") != null) ? EnumAction.NONE : EnumAction.BOW;
+        return EnumAction.BOW;
     }
 
     @Override
@@ -51,23 +51,21 @@ public class ItemFriendshipBracelet extends ItemBase implements IBauble {
                 item.setTagCompound(new NBTTagCompound());
                 item.getTagCompound().setUniqueId("PlayerID", player.getPersistentID());
                 TextComponentTranslation bracelet = new TextComponentTranslation("item.friendship_bracelet.rename");
-                String name = player.getName()+bracelet.getUnformattedComponentText();
+                String name = "§r"+player.getName()+bracelet.getUnformattedComponentText();
                 item.setStackDisplayName(name);
                 return new ActionResult<>(EnumActionResult.FAIL, item);
             }
             UUID id = item.getTagCompound().getUniqueId("PlayerID");
-            FBLog.info(id);
-            FBLog.info(player.getPersistentID());
             if (id.equals(player.getPersistentID())) {
                 equipBauble(world, player, hand);
                 return new ActionResult<>(EnumActionResult.FAIL, item);
-            } else if (server.getPlayerList().getPlayerByUUID(id) != null) {
+            } else if (server.getPlayerList().getPlayerByUUID(id) == null) {
                 player.sendStatusMessage(new TextComponentTranslation("msg.fb.notOnline"), true);
                 return new ActionResult<>(EnumActionResult.FAIL, item);
             } else return new ActionResult<>(EnumActionResult.SUCCESS, item);
         }
 
-        return super.onItemRightClick(world, player, hand);
+        return new ActionResult<>(EnumActionResult.FAIL, item);
     }
 
     @Override
@@ -82,6 +80,10 @@ public class ItemFriendshipBracelet extends ItemBase implements IBauble {
         if (!world.isRemote) {
             EntityPlayer to = server.getPlayerList().getPlayerByUUID(id);
             if (isAcceptingTeleports(to)) entityLiving.attemptTeleport(to.posX, to.posY, to.posZ);
+            else {
+                EntityPlayer player = (EntityPlayer)entityLiving;
+                player.sendStatusMessage(new TextComponentTranslation("msg.fb.notAccepting"), true);
+            }
         }
         return itemStack;
     }

@@ -6,6 +6,7 @@ item.friendship_bracelet.rename='s Friendship Bracelet
 
 #messages
 msg.fb.notOnline=Player not online!
+msg.fb.notAccepting=Player not accepting teleports!
 
 #misc
 itemGroup.friendshipbracelet=Friendship Bracelets
