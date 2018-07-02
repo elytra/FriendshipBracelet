@@ -73,21 +73,20 @@ public class ItemFriendshipBracelet extends ItemBase implements IBauble {
 
     @Override
     public int getMaxItemUseDuration(ItemStack itemStack) {
-        return 72000;
+        return 100;
     }
 
     public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft) {
-        FBLog.info(timeLeft);
         EntityPlayer player = (EntityPlayer)entityLiving;
-        if (this.getMaxItemUseDuration(stack)-timeLeft >= 1000) {
-            FBLog.info("Teleporting!");
+        if (timeLeft <= 0) {
             UUID id = stack.getTagCompound().getUniqueId("PlayerID");
             MinecraftServer server = world.getMinecraftServer();
             if (!world.isRemote) {
                 EntityPlayer to = server.getPlayerList().getPlayerByUUID(id);
                 if (isAcceptingTeleports(to)) {
+                    FBLog.info("Teleporting!");
                     player.attemptTeleport(to.posX, to.posY, to.posZ);
-                    player.getCooldownTracker().getCooldown(this, 300);
+                    player.getCooldownTracker().getCooldown(stack.getItem(), 300);
                 }
                 else {
                     player.sendStatusMessage(new TextComponentTranslation("msg.fb.notAccepting"), true);
@@ -104,6 +103,7 @@ public class ItemFriendshipBracelet extends ItemBase implements IBauble {
     private boolean isAcceptingTeleports(EntityPlayer player) {
         IBaublesItemHandler baubles = BaublesApi.getBaublesHandler(player);
         for(int i = 0; i < baubles.getSlots(); i++) {
+            FBLog.info(i+", "+baubles.getStackInSlot(i));
             if (baubles.getStackInSlot(i) == new ItemStack(ModItems.FRIENDSHIP_BRACELET, 1)) return true;
         }
         return false;
