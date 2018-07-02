@@ -76,25 +76,22 @@ public class ItemFriendshipBracelet extends ItemBase implements IBauble {
         return 100;
     }
 
-    public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft) {
+    @Override
+    public ItemStack onItemUseFinish(ItemStack stack, World world, EntityLivingBase entityLiving) {
         EntityPlayer player = (EntityPlayer)entityLiving;
-        if (timeLeft <= 0) {
-            UUID id = stack.getTagCompound().getUniqueId("PlayerID");
-            MinecraftServer server = world.getMinecraftServer();
-            if (!world.isRemote) {
-                EntityPlayer to = server.getPlayerList().getPlayerByUUID(id);
-                FBLog.info(to);
-                FBLog.info(isAcceptingTeleports(to));
-                if (isAcceptingTeleports(to)) {
-                    FBLog.info("Teleporting!");
-                    player.attemptTeleport(to.posX, to.posY, to.posZ);
-                    player.getCooldownTracker().getCooldown(stack.getItem(), 300);
-                }
-                else {
-                    player.sendStatusMessage(new TextComponentTranslation("msg.fb.notAccepting"), true);
-                }
+        UUID id = stack.getTagCompound().getUniqueId("PlayerID");
+        MinecraftServer server = world.getMinecraftServer();
+        if (!world.isRemote) {
+            EntityPlayer to = server.getPlayerList().getPlayerByUUID(id);
+            if (isAcceptingTeleports(to)) {
+                player.attemptTeleport(to.posX, to.posY, to.posZ);
+                player.getCooldownTracker().setCooldown(this, 300);
+            }
+            else {
+                player.sendStatusMessage(new TextComponentTranslation("msg.fb.notAccepting"), true);
             }
         }
+        return stack;
     }
 
     @Override

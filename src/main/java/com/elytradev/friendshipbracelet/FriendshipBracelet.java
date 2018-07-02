@@ -51,14 +51,14 @@ public class FriendshipBracelet {
     }
 
     @SubscribeEvent
-    public static void onItemCraft(PlayerEvent.ItemCraftedEvent e) {
+    public void onItemCraft(PlayerEvent.ItemCraftedEvent e) {
         ItemStack result = e.crafting;
-        if (result == new ItemStack(ModItems.FRIENDSHIP_BRACELET, 1)) {
+        if (result.getItem().equals(ModItems.FRIENDSHIP_BRACELET)) {
             NBTTagCompound tags = new NBTTagCompound();
             tags.setUniqueId("PlayerID", e.player.getPersistentID());
             result.setTagCompound(tags);
             TextComponentTranslation bracelet = new TextComponentTranslation("item.friendship_bracelet.rename");
-            String name = e.player.getName()+bracelet.getUnformattedComponentText();
+            String name = "§r"+e.player.getName()+bracelet.getUnformattedComponentText();
             result.setStackDisplayName(name);
         }
     }
