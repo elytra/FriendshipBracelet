@@ -1,6 +1,8 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "friendshipbracelet:items/friendship_bracelet"
+    "layer0": "friendshipbracelet:items/friendship_bracelet_left",
+    "layer1": "friendshipbracelet:items/friendship_bracelet_middle",
+    "layer2": "friendshipbracelet:items/friendship_bracelet_right"
   }
 }
