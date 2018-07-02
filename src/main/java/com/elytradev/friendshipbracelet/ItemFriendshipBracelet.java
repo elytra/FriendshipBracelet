@@ -1,13 +1,15 @@
-package com.elytradev.friendshipbracelet.item;
+package com.elytradev.friendshipbracelet;
 
 import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
 import baubles.api.IBauble;
 import baubles.api.cap.IBaublesItemHandler;
-import com.elytradev.friendshipbracelet.FBLog;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -17,16 +19,29 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.UUID;
 
-public class ItemFriendshipBracelet extends ItemBase implements IBauble {
+public class ItemFriendshipBracelet extends Item implements IBauble {
 
-    public NBTTagCompound tags;
+    public String name;
 
     public ItemFriendshipBracelet() {
-        super("friendship_bracelet");
-        setMaxStackSize(1);
+        this.name = "friendship_bracelet";
+        setUnlocalizedName(name);
+        setRegistryName(name);
+        this.maxStackSize = 1;
+    }
+
+    public void registerItemModel() {
+        FriendshipBracelet.proxy.registerItemRenderer(this, 0, name);
+    }
+
+    @Override
+    public ItemFriendshipBracelet setCreativeTab(CreativeTabs tab) {
+        super.setCreativeTab(CreativeTabs.TRANSPORTATION);
+        return this;
     }
 
     @Override
@@ -85,6 +100,7 @@ public class ItemFriendshipBracelet extends ItemBase implements IBauble {
             EntityPlayer to = server.getPlayerList().getPlayerByUUID(id);
             if (isAcceptingTeleports(to)) {
                 player.attemptTeleport(to.posX, to.posY, to.posZ);
+                player.playSound(SoundEvents.BLOCK_PORTAL_TRAVEL, 1f, 1f);
                 player.getCooldownTracker().setCooldown(this, 300);
             }
             else {
@@ -105,7 +121,7 @@ public class ItemFriendshipBracelet extends ItemBase implements IBauble {
             ItemStack stackInSlot = baubles.getStackInSlot(i);
             if (!stackInSlot.isEmpty()) {
                 FBLog.info(i);
-                return baubles.getStackInSlot(i).getItem().equals(ModItems.FRIENDSHIP_BRACELET);
+                return baubles.getStackInSlot(i).getItem().equals(this.FRIENDSHIP_BRACELET);
             }
         }
         return false;
@@ -142,6 +158,7 @@ public class ItemFriendshipBracelet extends ItemBase implements IBauble {
                                 ItemHandlerHelper.giveItemToPlayer(player, stackInSlot);
                             }
                         }
+                        player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 1f, 1f);
                         return;
                     }
                 }
@@ -149,4 +166,13 @@ public class ItemFriendshipBracelet extends ItemBase implements IBauble {
         }
     }
 
+    public static ItemFriendshipBracelet FRIENDSHIP_BRACELET = new ItemFriendshipBracelet();
+
+    public static void register(IForgeRegistry<Item> registry) {
+        registry.register(FRIENDSHIP_BRACELET);
+    }
+
+    public static void registerModels() {
+        FRIENDSHIP_BRACELET.registerItemModel();
+    }
 }

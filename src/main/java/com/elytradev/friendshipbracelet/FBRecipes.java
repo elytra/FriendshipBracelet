@@ -1,7 +1,5 @@
-package com.elytradev.friendshipbracelet.util;
+package com.elytradev.friendshipbracelet;
 
-import com.elytradev.friendshipbracelet.item.ModItems;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -20,7 +18,7 @@ public class FBRecipes {
 
 //         Crafting bench recipes
 
-        recipe(r, new ShapedOreRecipe(new ResourceLocation("friendshipbracelet:items"), new ItemStack(ModItems.FRIENDSHIP_BRACELET, 1),
+        recipe(r, new ShapedOreRecipe(new ResourceLocation("friendshipbracelet:items"), new ItemStack(ItemFriendshipBracelet.FRIENDSHIP_BRACELET, 1),
                 " s ", "sps", " s ",
                 's', new ItemStack(Items.STRING),
                 'p', new ItemStack(Items.ENDER_PEARL)

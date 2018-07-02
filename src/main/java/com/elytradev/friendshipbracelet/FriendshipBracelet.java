@@ -1,9 +1,6 @@
 package com.elytradev.friendshipbracelet;
 
-import com.elytradev.friendshipbracelet.client.FBTab;
-import com.elytradev.friendshipbracelet.item.ModItems;
 import com.elytradev.friendshipbracelet.proxy.CommonProxy;
-import com.elytradev.friendshipbracelet.util.FBRecipes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,7 +8,6 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -31,13 +27,6 @@ public class FriendshipBracelet {
     @Mod.Instance(modId)
     public static FriendshipBracelet instance;
 
-    public static final FBTab creativeTab = new FBTab();
-
-    
-    static {
-        FluidRegistry.enableUniversalBucket();
-    }
-
     @SidedProxy(serverSide = "com.elytradev.friendshipbracelet.proxy.CommonProxy", clientSide = "com.elytradev.friendshipbracelet.proxy.ClientProxy")
     public static CommonProxy proxy;
 
@@ -53,7 +42,7 @@ public class FriendshipBracelet {
     @SubscribeEvent
     public void onItemCraft(PlayerEvent.ItemCraftedEvent e) {
         ItemStack result = e.crafting;
-        if (result.getItem().equals(ModItems.FRIENDSHIP_BRACELET)) {
+        if (result.getItem().equals(ItemFriendshipBracelet.FRIENDSHIP_BRACELET)) {
             NBTTagCompound tags = new NBTTagCompound();
             tags.setUniqueId("PlayerID", e.player.getPersistentID());
             result.setTagCompound(tags);
@@ -65,9 +54,7 @@ public class FriendshipBracelet {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        //MinecraftForge.EVENT_BUS.register(new SoundRegisterListener());
-        //MinecraftForge.EVENT_BUS.register(LightHandler.class);
-        ModItems.registerOreDict(); // register oredict
+
     }
 
     @Mod.EventHandler
@@ -79,12 +66,12 @@ public class FriendshipBracelet {
     public static class RegistrationHandler {
         @SubscribeEvent
         public static void registerItems(RegistryEvent.Register<Item> event) {
-            ModItems.register(event.getRegistry());
+            ItemFriendshipBracelet.register(event.getRegistry());
         }
 
         @SubscribeEvent
         public static void registerModels(ModelRegistryEvent event) {
-            ModItems.registerModels();
+            ItemFriendshipBracelet.registerModels();
         }
     }
 }
