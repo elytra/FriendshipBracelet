@@ -62,8 +62,8 @@ public class ItemFriendshipBracelet extends Item implements IBauble {
         MinecraftServer server = world.getMinecraftServer();
 
         if (!world.isRemote) {
-            if (item.getTagCompound() == null) {
-                item.setTagCompound(new NBTTagCompound());
+            if (!item.hasTagCompound() || !item.getTagCompound().hasKey("PlayerID")) {
+                if (!item.hasTagCompound()) item.setTagCompound(new NBTTagCompound());
                 item.getTagCompound().setUniqueId("PlayerID", player.getPersistentID());
                 TextComponentTranslation bracelet = new TextComponentTranslation("item.friendship_bracelet.rename");
                 String name = "§r"+player.getName()+bracelet.getUnformattedComponentText();
