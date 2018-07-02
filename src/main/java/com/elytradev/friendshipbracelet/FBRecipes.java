@@ -19,8 +19,9 @@ public class FBRecipes {
 //         Crafting bench recipes
 
         recipe(r, new ShapedOreRecipe(new ResourceLocation("friendshipbracelet:items"), new ItemStack(ItemFriendshipBracelet.FRIENDSHIP_BRACELET, 1),
-                " s ", "sps", " s ",
-                's', new ItemStack(Items.STRING),
+                "ddd", "sss", "sps",
+                'd', "dye",
+                's', "string",
                 'p', new ItemStack(Items.ENDER_PEARL)
         ));
 

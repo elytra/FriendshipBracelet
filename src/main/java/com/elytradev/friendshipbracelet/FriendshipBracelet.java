@@ -15,6 +15,10 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 @Mod(modid = FriendshipBracelet.modId, name = FriendshipBracelet.name, version = FriendshipBracelet.version, dependencies = "required-after:baubles@[1.5.2,)")
@@ -43,6 +47,10 @@ public class FriendshipBracelet {
     public void onItemCraft(PlayerEvent.ItemCraftedEvent e) {
         ItemStack result = e.crafting;
         if (result.getItem().equals(ItemFriendshipBracelet.FRIENDSHIP_BRACELET)) {
+            int dye1 = getStackColor(e.craftMatrix.getStackInSlot(0));
+            int dye2 = getStackColor(e.craftMatrix.getStackInSlot(1));
+            int dye3 = getStackColor(e.craftMatrix.getStackInSlot(2));
+            FBLog.info(dye1+", "+dye2+", "+dye3);
             NBTTagCompound tags = new NBTTagCompound();
             tags.setUniqueId("PlayerID", e.player.getPersistentID());
             result.setTagCompound(tags);
@@ -50,6 +58,20 @@ public class FriendshipBracelet {
             String name = "§r"+e.player.getName()+bracelet.getUnformattedComponentText();
             result.setStackDisplayName(name);
         }
+    }
+
+//    Code from Vazkii's mod Botania. Modified to remove mana pearls, but nothing else.
+    private static final List<String> DYES = Arrays.asList("dyeWhite", "dyeOrange", "dyeMagenta", "dyeLightBlue", "dyeYellow", "dyeLime", "dyePink", "dyeGray", "dyeLightGray", "dyeCyan", "dyePurple", "dyeBlue", "dyeBrown", "dyeGreen", "dyeRed", "dyeBlack");
+
+    int getStackColor(ItemStack stack) {
+        int[] ids = OreDictionary.getOreIDs(stack);
+        for(int i : ids) {
+            int index = DYES.indexOf(OreDictionary.getOreName(i));
+            if(index >= 0)
+                return index;
+        }
+
+        return -1;
     }
 
     @Mod.EventHandler
