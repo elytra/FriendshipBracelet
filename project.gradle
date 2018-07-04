@@ -4,7 +4,7 @@ ext {
 	group = 'com.elytradev'
 	projectName = 'FriendshipBracelet'
 
-	useElytraVersionFormat = true
+	useElytraVersionFormat = System.properties["release"] == null
 	version = '1'
 
 	concreteVersion = '0.5.40'
