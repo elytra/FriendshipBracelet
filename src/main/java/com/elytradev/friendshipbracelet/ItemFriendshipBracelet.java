@@ -122,8 +122,7 @@ public class ItemFriendshipBracelet extends Item implements IBauble {
         for(int i = 0; i < baubles.getSlots(); i++) {
             ItemStack stackInSlot = baubles.getStackInSlot(i);
             if (!stackInSlot.isEmpty()) {
-                FBLog.info(i);
-                return baubles.getStackInSlot(i).getItem().equals(FRIENDSHIP_BRACELET);
+                if (baubles.getStackInSlot(i).getItem().equals(FRIENDSHIP_BRACELET)) return true;
             }
         }
         return false;
@@ -143,8 +142,7 @@ public class ItemFriendshipBracelet extends Item implements IBauble {
             for(int i = 0; i < baubles.getSlots(); i++) {
                 if(baubles.isItemValidForSlot(i, toEquip, player)) {
                     ItemStack stackInSlot = baubles.getStackInSlot(i);
-                    if(stackInSlot.isEmpty() || ((IBauble) stackInSlot.getItem()).canUnequip(stackInSlot, player)) {
-                        // If toEquip and stackInSlot are stacks with equal value but not identity, ItemStackHandler.setStackInSlot actually does nothing >.>
+                    if(stackInSlot.isEmpty()) {
                         // Prevent it from trying to be overly smart by going through empty first
                         baubles.setStackInSlot(i, ItemStack.EMPTY);
 
@@ -152,14 +150,6 @@ public class ItemFriendshipBracelet extends Item implements IBauble {
                         ((IBauble) toEquip.getItem()).onEquipped(toEquip, player);
 
                         stack.shrink(1);
-
-                        if(!stackInSlot.isEmpty()) {
-                            ((IBauble) stackInSlot.getItem()).onUnequipped(stackInSlot, player);
-
-                            if(stack.isEmpty()) return; else {
-                                ItemHandlerHelper.giveItemToPlayer(player, stackInSlot);
-                            }
-                        }
                         player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 1f, 1f);
                         return;
                     }
