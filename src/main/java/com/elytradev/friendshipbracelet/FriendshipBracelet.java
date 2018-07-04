@@ -22,7 +22,6 @@ public class FriendshipBracelet {
     public static final String name  = "Friendship Bracelet";
     public static final String version = "@VERSION@";
 
-
     @Mod.Instance(modId)
     public static FriendshipBracelet instance;
 

@@ -62,7 +62,9 @@ public class ItemFriendshipBracelet extends Item implements IBauble {
         MinecraftServer server = world.getMinecraftServer();
 
         if (!world.isRemote) {
-            if (!item.hasTagCompound() || !item.getTagCompound().hasKey("PlayerID")) {
+            FBLog.info(item.getTagCompound().hasKey("PlayerIDMost"));
+            FBLog.info(item.getTagCompound());
+            if (!item.hasTagCompound() || !item.getTagCompound().hasKey("PlayerIDMost")) {
                 if (!item.hasTagCompound()) item.setTagCompound(new NBTTagCompound());
                 item.getTagCompound().setUniqueId("PlayerID", player.getPersistentID());
                 TextComponentTranslation bracelet = new TextComponentTranslation("item.friendship_bracelet.rename");
@@ -121,7 +123,7 @@ public class ItemFriendshipBracelet extends Item implements IBauble {
             ItemStack stackInSlot = baubles.getStackInSlot(i);
             if (!stackInSlot.isEmpty()) {
                 FBLog.info(i);
-                return baubles.getStackInSlot(i).getItem().equals(this.FRIENDSHIP_BRACELET);
+                return baubles.getStackInSlot(i).getItem().equals(FRIENDSHIP_BRACELET);
             }
         }
         return false;
