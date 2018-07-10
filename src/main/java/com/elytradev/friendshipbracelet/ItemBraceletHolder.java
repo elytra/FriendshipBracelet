@@ -1,19 +1,23 @@
 package com.elytradev.friendshipbracelet;
 
 import com.elytradev.concrete.inventory.ConcreteItemStorage;
+import com.elytradev.concrete.inventory.IContainerInventoryHolder;
+import com.elytradev.concrete.inventory.ValidatedInventoryView;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ItemBraceletHolder extends Item {
+public class ItemBraceletHolder extends Item implements IContainerInventoryHolder {
 
     public String name;
     public ConcreteItemStorage inv;
@@ -36,13 +40,13 @@ public class ItemBraceletHolder extends Item {
     }
 
     @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        ItemStack item = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        ItemStack item = player.getHeldItem(hand);
         if (item.hasTagCompound()) inv.deserializeNBT(item.getTagCompound().getCompoundTag("Inventory"));
         if(!world.isRemote && !player.isSneaking()) {
-            player.openGui(FriendshipBracelet.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
+            player.openGui(FriendshipBracelet.instance, 0, world, 0, 0, 0);
         }
-        return EnumActionResult.SUCCESS;
+        return new ActionResult<>(EnumActionResult.SUCCESS, item);
     }
 
     public void registerItemModel() {
@@ -57,5 +61,10 @@ public class ItemBraceletHolder extends Item {
 
     private void markDirty() {
         tag.setTag("Inventory", inv.serializeNBT());
+    }
+
+    @Override
+    public IInventory getContainerInventory() {
+        return new ValidatedInventoryView(inv);
     }
 }

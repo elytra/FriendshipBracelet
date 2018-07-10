@@ -4,9 +4,11 @@ import com.elytradev.concrete.inventory.IContainerInventoryHolder;
 import com.elytradev.concrete.inventory.gui.client.ConcreteGui;
 import com.elytradev.friendshipbracelet.proxy.CommonProxy;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -51,17 +53,20 @@ public class FriendshipBracelet {
             @Nullable
             @Override
             public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+                EnumHand hand = (player.getHeldItemMainhand().getItem() == ItemFriendshipBracelet.BRACELET_HOLDER)? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
+                ItemBraceletHolder holder = (ItemBraceletHolder)player.getHeldItem(hand).getItem();
                 return new BraceletHolderContainer(
-                        player.inventory, ((IContainerInventoryHolder)world.getTileEntity(new BlockPos(x,y,z))).getContainerInventory());
-
+                        player.inventory, (holder.getContainerInventory()));
             }
 
             @Nullable
             @Override
             @SideOnly(Side.CLIENT)
             public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+                EnumHand hand = (player.getHeldItemMainhand().getItem() == ItemFriendshipBracelet.BRACELET_HOLDER)? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
+                ItemBraceletHolder holder = (ItemBraceletHolder)player.getHeldItem(hand).getItem();
                 BraceletHolderContainer braceletHolderContainer = new BraceletHolderContainer(
-                        player.inventory, ((IContainerInventoryHolder)world.getTileEntity(new BlockPos(x,y,z))).getContainerInventory());
+                        player.inventory, (holder.getContainerInventory()));
                 return new ConcreteGui(braceletHolderContainer);
             }
         });
