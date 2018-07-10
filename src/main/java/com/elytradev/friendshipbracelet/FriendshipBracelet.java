@@ -1,10 +1,15 @@
 package com.elytradev.friendshipbracelet;
 
+import com.elytradev.concrete.inventory.IContainerInventoryHolder;
+import com.elytradev.concrete.inventory.gui.client.ConcreteGui;
 import com.elytradev.friendshipbracelet.proxy.CommonProxy;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
@@ -15,6 +20,12 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
 
 @Mod(modid = FriendshipBracelet.modId, name = FriendshipBracelet.name, version = FriendshipBracelet.version, dependencies = "required-after:baubles@[1.5.2,)")
 public class FriendshipBracelet {
@@ -35,6 +46,25 @@ public class FriendshipBracelet {
         MinecraftForge.EVENT_BUS.register(proxy);
         MinecraftForge.EVENT_BUS.register(FBRecipes.class);
         MinecraftForge.EVENT_BUS.register(this);
+
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, new IGuiHandler() {
+            @Nullable
+            @Override
+            public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+                return new BraceletHolderContainer(
+                        player.inventory, ((IContainerInventoryHolder)world.getTileEntity(new BlockPos(x,y,z))).getContainerInventory());
+
+            }
+
+            @Nullable
+            @Override
+            @SideOnly(Side.CLIENT)
+            public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+                BraceletHolderContainer braceletHolderContainer = new BraceletHolderContainer(
+                        player.inventory, ((IContainerInventoryHolder)world.getTileEntity(new BlockPos(x,y,z))).getContainerInventory());
+                return new ConcreteGui(braceletHolderContainer);
+            }
+        });
     }
 
     @SubscribeEvent
