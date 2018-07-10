@@ -8,7 +8,7 @@ ext {
 	version = '1'
 
 	concreteVersion = '0.5.40'
-	concreteModules = [ 'common' ]
+	concreteModules = [ 'common', 'inventory' ]
 
 	coremod = null
 	miniVersion = null
