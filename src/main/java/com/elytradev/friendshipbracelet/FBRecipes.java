@@ -25,6 +25,13 @@ public class FBRecipes {
                 'p', new ItemStack(Items.ENDER_PEARL)
         ));
 
+        recipe(r, new ShapedOreRecipe(new ResourceLocation("friendshipbracelet:items"), new ItemStack(ItemFriendshipBracelet.BRACELET_HOLDER, 1),
+                "sls", "lpl", "lll",
+                'l', "leather",
+                's', "string",
+                'p', new ItemStack(Items.ENDER_PEARL)
+        ));
+
     }
 
     public static <T extends IRecipe> T recipe(IForgeRegistry<IRecipe> registry, T t) {

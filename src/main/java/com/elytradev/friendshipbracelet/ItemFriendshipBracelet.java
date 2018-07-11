@@ -158,8 +158,8 @@ public class ItemFriendshipBracelet extends Item implements IBauble {
         }
     }
 
-    public static ItemFriendshipBracelet FRIENDSHIP_BRACELET = new ItemFriendshipBracelet();
-    public static ItemBraceletHolder BRACELET_HOLDER = new ItemBraceletHolder();
+    public static ItemFriendshipBracelet FRIENDSHIP_BRACELET = new ItemFriendshipBracelet().setCreativeTab(CreativeTabs.TRANSPORTATION);
+    public static ItemBraceletHolder BRACELET_HOLDER = new ItemBraceletHolder().setCreativeTab(CreativeTabs.TRANSPORTATION);
 
     public static void register(IForgeRegistry<Item> registry) {
         registry.register(FRIENDSHIP_BRACELET);

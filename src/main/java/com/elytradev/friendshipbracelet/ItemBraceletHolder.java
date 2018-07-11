@@ -40,7 +40,7 @@ public class ItemBraceletHolder extends Item {
                             (it) -> (it.getItem() == ItemFriendshipBracelet.FRIENDSHIP_BRACELET),
                             (it) -> (it.getItem() == ItemFriendshipBracelet.FRIENDSHIP_BRACELET),
                             (it) -> (it.getItem() == ItemFriendshipBracelet.FRIENDSHIP_BRACELET))
-                    .withName("Bracelet Holder");
+                    .withName(ItemFriendshipBracelet.BRACELET_HOLDER.getUnlocalizedName()+".name");
 
             e.addCapability(new ResourceLocation("friendshipbracelet", "bracelet_holder"), new ICapabilityProvider() {
                 @Override
@@ -52,13 +52,15 @@ public class ItemBraceletHolder extends Item {
                 @SuppressWarnings("unchecked")
                 public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
                     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-                        return (T) new ValidatedItemHandlerView(inv);
+                        if (facing == null) return (T) inv;
+                        else return (T) new ValidatedItemHandlerView(inv);
                     } else {
                         return null;
                     }
                 }
             });
         }
+
     }
 
     @Override

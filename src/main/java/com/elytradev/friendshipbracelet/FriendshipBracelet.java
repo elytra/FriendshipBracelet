@@ -1,6 +1,9 @@
 package com.elytradev.friendshipbracelet;
 
+import com.elytradev.concrete.inventory.ConcreteItemStorage;
 import com.elytradev.concrete.inventory.IContainerInventoryHolder;
+import com.elytradev.concrete.inventory.ValidatedInventoryView;
+import com.elytradev.concrete.inventory.ValidatedItemHandlerView;
 import com.elytradev.concrete.inventory.gui.client.ConcreteGui;
 import com.elytradev.friendshipbracelet.proxy.CommonProxy;
 import net.minecraft.entity.player.EntityPlayer;
@@ -57,7 +60,7 @@ public class FriendshipBracelet {
                 EnumHand hand = (player.getHeldItemMainhand().getItem() == ItemFriendshipBracelet.BRACELET_HOLDER)? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
                 ItemStack stack = player.getHeldItem(hand);
                 return new BraceletHolderContainer(
-                        player.inventory, (IInventory)stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, player.getHorizontalFacing()));
+                        player.inventory, new ValidatedInventoryView((ConcreteItemStorage)stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)));
             }
 
             @Nullable
@@ -67,7 +70,7 @@ public class FriendshipBracelet {
                 EnumHand hand = (player.getHeldItemMainhand().getItem() == ItemFriendshipBracelet.BRACELET_HOLDER)? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
                 ItemStack stack = player.getHeldItem(hand);
                 BraceletHolderContainer braceletHolderContainer = new BraceletHolderContainer(
-                        player.inventory, (IInventory)stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, player.getHorizontalFacing()));
+                        player.inventory, new ValidatedInventoryView((ConcreteItemStorage)stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)));
                 return new ConcreteGui(braceletHolderContainer);
             }
         });
