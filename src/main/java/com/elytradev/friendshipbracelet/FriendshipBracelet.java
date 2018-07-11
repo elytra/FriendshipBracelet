@@ -26,6 +26,7 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
 
@@ -45,8 +46,8 @@ public class FriendshipBracelet {
     public void preInit(FMLPreInitializationEvent event) {
         FBLog.info(name + " is loading!");
 
-        MinecraftForge.EVENT_BUS.register(proxy);
         MinecraftForge.EVENT_BUS.register(FBRecipes.class);
+        MinecraftForge.EVENT_BUS.register(proxy);
         MinecraftForge.EVENT_BUS.register(this);
 
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new IGuiHandler() {
@@ -54,9 +55,9 @@ public class FriendshipBracelet {
             @Override
             public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
                 EnumHand hand = (player.getHeldItemMainhand().getItem() == ItemFriendshipBracelet.BRACELET_HOLDER)? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
-                ItemBraceletHolder holder = (ItemBraceletHolder)player.getHeldItem(hand).getItem();
+                ItemStack stack = player.getHeldItem(hand);
                 return new BraceletHolderContainer(
-                        player.inventory, (holder.getContainerInventory()));
+                        player.inventory, (IInventory)stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, player.getHorizontalFacing()));
             }
 
             @Nullable
@@ -64,9 +65,9 @@ public class FriendshipBracelet {
             @SideOnly(Side.CLIENT)
             public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
                 EnumHand hand = (player.getHeldItemMainhand().getItem() == ItemFriendshipBracelet.BRACELET_HOLDER)? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
-                ItemBraceletHolder holder = (ItemBraceletHolder)player.getHeldItem(hand).getItem();
+                ItemStack stack = player.getHeldItem(hand);
                 BraceletHolderContainer braceletHolderContainer = new BraceletHolderContainer(
-                        player.inventory, (holder.getContainerInventory()));
+                        player.inventory, (IInventory)stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, player.getHorizontalFacing()));
                 return new ConcreteGui(braceletHolderContainer);
             }
         });

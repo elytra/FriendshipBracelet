@@ -1,26 +1,25 @@
 package com.elytradev.friendshipbracelet;
 
 import com.elytradev.concrete.inventory.ConcreteItemStorage;
-import com.elytradev.concrete.inventory.IContainerInventoryHolder;
-import com.elytradev.concrete.inventory.ValidatedInventoryView;
+import com.elytradev.concrete.inventory.ValidatedItemHandlerView;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.items.CapabilityItemHandler;
 
-public class ItemBraceletHolder extends Item implements IContainerInventoryHolder {
+import javax.annotation.Nullable;
+
+public class ItemBraceletHolder extends Item {
 
     public String name;
-    public ConcreteItemStorage inv;
     public NBTTagCompound tag;
 
     public ItemBraceletHolder() {
@@ -29,20 +28,42 @@ public class ItemBraceletHolder extends Item implements IContainerInventoryHolde
         setRegistryName(name);
         this.maxStackSize = 1;
         this.tag = new NBTTagCompound();
-        this.inv = new ConcreteItemStorage(6)
-                .withValidators((it)->(it.getItem() == ItemFriendshipBracelet.FRIENDSHIP_BRACELET),
-                        (it)->(it.getItem() == ItemFriendshipBracelet.FRIENDSHIP_BRACELET),
-                        (it)->(it.getItem() == ItemFriendshipBracelet.FRIENDSHIP_BRACELET),
-                        (it)->(it.getItem() == ItemFriendshipBracelet.FRIENDSHIP_BRACELET),
-                        (it)->(it.getItem() == ItemFriendshipBracelet.FRIENDSHIP_BRACELET),
-                        (it)->(it.getItem() == ItemFriendshipBracelet.FRIENDSHIP_BRACELET));
-        inv.listen(this::markDirty);
+    }
+
+    @SubscribeEvent
+    public void addCapability(AttachCapabilitiesEvent e) {
+        if (e.getObject() instanceof ItemBraceletHolder) {
+            ConcreteItemStorage inv = new ConcreteItemStorage(6)
+                    .withValidators((it) -> (it.getItem() == ItemFriendshipBracelet.FRIENDSHIP_BRACELET),
+                            (it) -> (it.getItem() == ItemFriendshipBracelet.FRIENDSHIP_BRACELET),
+                            (it) -> (it.getItem() == ItemFriendshipBracelet.FRIENDSHIP_BRACELET),
+                            (it) -> (it.getItem() == ItemFriendshipBracelet.FRIENDSHIP_BRACELET),
+                            (it) -> (it.getItem() == ItemFriendshipBracelet.FRIENDSHIP_BRACELET),
+                            (it) -> (it.getItem() == ItemFriendshipBracelet.FRIENDSHIP_BRACELET))
+                    .withName("Bracelet Holder");
+
+            e.addCapability(new ResourceLocation("friendshipbracelet", "bracelet_holder"), new ICapabilityProvider() {
+                @Override
+                public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+                    return (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+                }
+
+                @Override
+                @SuppressWarnings("unchecked")
+                public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+                    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+                        return (T) new ValidatedItemHandlerView(inv);
+                    } else {
+                        return null;
+                    }
+                }
+            });
+        }
     }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         ItemStack item = player.getHeldItem(hand);
-        if (item.hasTagCompound()) inv.deserializeNBT(item.getTagCompound().getCompoundTag("Inventory"));
         if(!world.isRemote && !player.isSneaking()) {
             player.openGui(FriendshipBracelet.instance, 0, world, 0, 0, 0);
         }
@@ -59,12 +80,8 @@ public class ItemBraceletHolder extends Item implements IContainerInventoryHolde
         return this;
     }
 
-    private void markDirty() {
-        tag.setTag("Inventory", inv.serializeNBT());
-    }
+//    private void markDirty() {
+//        tag.setTag("Inventory", inv.serializeNBT());
+//    }
 
-    @Override
-    public IInventory getContainerInventory() {
-        return new ValidatedInventoryView(inv);
-    }
 }
