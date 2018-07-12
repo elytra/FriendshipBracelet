@@ -24,6 +24,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -169,10 +170,14 @@ public class ItemBraceletKeyring extends Item {
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         if (stack.hasTagCompound() && stack.getTagCompound().hasKey("Inventory")) {
-            ConcreteItemStorage inv = (ConcreteItemStorage) stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+            IItemHandler inv = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+            if (inv==null || !(inv instanceof ConcreteItemStorage))  {
+                tooltip.add(I18n.format("tooltip.fb.keyring_blank"));
+                return;
+            }
             ItemStack bracelet = inv.getStackInSlot(0);
             if (!bracelet.isEmpty() && bracelet.hasTagCompound()) {
-                I18n.format("tooltip.fb.keyring", bracelet.getDisplayName());
+                tooltip.add(I18n.format("tooltip.fb.keyring", bracelet.getDisplayName()));
             }
         }
     }
