@@ -30,6 +30,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 
@@ -52,25 +53,38 @@ public class FriendshipBracelet {
         MinecraftForge.EVENT_BUS.register(FBRecipes.class);
         MinecraftForge.EVENT_BUS.register(proxy);
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(ItemFriendshipBracelet.BRACELET_HOLDER);
 
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new IGuiHandler() {
             @Nullable
             @Override
             public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-                EnumHand hand = (player.getHeldItemMainhand().getItem() == ItemFriendshipBracelet.BRACELET_HOLDER)? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
-                ItemStack stack = player.getHeldItem(hand);
+                ItemStack stack;
+                if (player.getHeldItemMainhand().getItem() == ItemFriendshipBracelet.BRACELET_HOLDER) {
+                    stack = player.getHeldItemMainhand();
+                } else if (player.getHeldItemOffhand().getItem() == ItemFriendshipBracelet.BRACELET_HOLDER) {
+                    stack = player.getHeldItemOffhand();
+                } else return null;
+                IItemHandler storage = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+                if (storage==null | !(storage instanceof ConcreteItemStorage)) return null;
                 return new BraceletHolderContainer(
-                        player.inventory, new ValidatedInventoryView((ConcreteItemStorage)stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)));
+                        player.inventory, new ValidatedInventoryView((ConcreteItemStorage)storage));
             }
 
             @Nullable
             @Override
             @SideOnly(Side.CLIENT)
             public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-                EnumHand hand = (player.getHeldItemMainhand().getItem() == ItemFriendshipBracelet.BRACELET_HOLDER)? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
-                ItemStack stack = player.getHeldItem(hand);
+                ItemStack stack;
+                if (player.getHeldItemMainhand().getItem() == ItemFriendshipBracelet.BRACELET_HOLDER) {
+                    stack = player.getHeldItemMainhand();
+                } else if (player.getHeldItemOffhand().getItem() == ItemFriendshipBracelet.BRACELET_HOLDER) {
+                    stack = player.getHeldItemOffhand();
+                } else return null;
+                IItemHandler storage = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+                if (storage==null | !(storage instanceof ConcreteItemStorage)) return null;
                 BraceletHolderContainer braceletHolderContainer = new BraceletHolderContainer(
-                        player.inventory, new ValidatedInventoryView((ConcreteItemStorage)stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)));
+                        player.inventory, new ValidatedInventoryView((ConcreteItemStorage)storage));
                 return new ConcreteGui(braceletHolderContainer);
             }
         });
