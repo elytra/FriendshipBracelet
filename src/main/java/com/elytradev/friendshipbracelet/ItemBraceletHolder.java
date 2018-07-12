@@ -44,8 +44,12 @@ public class ItemBraceletHolder extends Item {
                                 (it) -> (it.getItem() == ItemFriendshipBracelet.FRIENDSHIP_BRACELET))
                         .withName(ItemFriendshipBracelet.BRACELET_HOLDER.getUnlocalizedName()+".name");
 
-                if (!stack.hasTagCompound()) stack.setTagCompound(new NBTTagCompound());
-                stack.getTagCompound().setTag("Inventory", inv.serializeNBT());
+                inv.listen(new Runnable() {
+                    public void run() {
+                        if (!stack.hasTagCompound()) stack.setTagCompound(new NBTTagCompound());
+                        stack.getTagCompound().setTag("Inventory",inv.serializeNBT());
+                    }
+                });
 
                 e.addCapability(new ResourceLocation("friendshipbracelet", "bracelet_holder"), new ICapabilityProvider() {
                     @Override
@@ -66,6 +70,7 @@ public class ItemBraceletHolder extends Item {
                             return null;
                         }
                     }
+
                 });
             }
         }
@@ -89,9 +94,5 @@ public class ItemBraceletHolder extends Item {
         super.setCreativeTab(CreativeTabs.TRANSPORTATION);
         return this;
     }
-
-//    private void markDirty() {
-//        tag.setTag("Inventory", inv.serializeNBT());
-//    }
 
 }
