@@ -18,7 +18,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
-import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.UUID;
@@ -62,8 +61,6 @@ public class ItemFriendshipBracelet extends Item implements IBauble {
         MinecraftServer server = world.getMinecraftServer();
 
         if (!world.isRemote) {
-            FBLog.info(item.getTagCompound().hasKey("PlayerIDMost"));
-            FBLog.info(item.getTagCompound());
             if (!item.hasTagCompound() || !item.getTagCompound().hasKey("PlayerIDMost")) {
                 if (!item.hasTagCompound()) item.setTagCompound(new NBTTagCompound());
                 item.getTagCompound().setUniqueId("PlayerID", player.getPersistentID());
@@ -159,15 +156,15 @@ public class ItemFriendshipBracelet extends Item implements IBauble {
     }
 
     public static ItemFriendshipBracelet FRIENDSHIP_BRACELET = new ItemFriendshipBracelet().setCreativeTab(CreativeTabs.TRANSPORTATION);
-    public static ItemBraceletHolder BRACELET_HOLDER = new ItemBraceletHolder().setCreativeTab(CreativeTabs.TRANSPORTATION);
+    public static ItemBraceletKeyring BRACELET_KEYRING = new ItemBraceletKeyring().setCreativeTab(CreativeTabs.TRANSPORTATION);
 
     public static void register(IForgeRegistry<Item> registry) {
         registry.register(FRIENDSHIP_BRACELET);
-        registry.register(BRACELET_HOLDER);
+        registry.register(BRACELET_KEYRING);
     }
 
     public static void registerModels() {
         FRIENDSHIP_BRACELET.registerItemModel();
-        BRACELET_HOLDER.registerItemModel();
+        BRACELET_KEYRING.registerItemModel();
     }
 }

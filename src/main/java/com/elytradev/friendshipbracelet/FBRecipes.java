@@ -25,10 +25,10 @@ public class FBRecipes {
                 'p', new ItemStack(Items.ENDER_PEARL)
         ));
 
-        recipe(r, new ShapedOreRecipe(new ResourceLocation("friendshipbracelet:items"), new ItemStack(ItemFriendshipBracelet.BRACELET_HOLDER, 1),
-                "sls", "lpl", "lll",
+        recipe(r, new ShapedOreRecipe(new ResourceLocation("friendshipbracelet:items"), new ItemStack(ItemFriendshipBracelet.BRACELET_KEYRING, 1),
+                "ln ", "npn", " n ",
                 'l', "leather",
-                's', "string",
+                'n', "nuggetIron",
                 'p', new ItemStack(Items.ENDER_PEARL)
         ));
 

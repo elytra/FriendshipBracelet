@@ -1,9 +1,11 @@
 #items
 item.friendship_bracelet.name=Friendship Bracelet
 item.friendship_bracelet.rename='s Friendship Bracelet
-item.bracelet_holder.name=Bracelet Holder
+item.bracelet_keyring.name=Bracelet Keyring
 
 #tooltips
+tooltip.fb.keyring=Currently selected: %s
+tooltip.fb.keyring_blank=No bracelet in top slot
 
 #messages
 msg.fb.notOnline=Player not online!

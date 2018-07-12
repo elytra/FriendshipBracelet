@@ -4,9 +4,9 @@ import com.elytradev.concrete.inventory.gui.ConcreteContainer;
 import com.elytradev.concrete.inventory.gui.widget.*;
 import net.minecraft.inventory.IInventory;
 
-public class BraceletHolderContainer extends ConcreteContainer {
+public class BraceletKeyringContainer extends ConcreteContainer {
 
-    public BraceletHolderContainer(IInventory player, IInventory container) {
+    public BraceletKeyringContainer(IInventory player, IInventory container) {
         super(player, container);
         WPlainPanel panel = new WPlainPanel();
         setRootPanel(panel);

@@ -1,18 +1,13 @@
 package com.elytradev.friendshipbracelet;
 
 import com.elytradev.concrete.inventory.ConcreteItemStorage;
-import com.elytradev.concrete.inventory.IContainerInventoryHolder;
 import com.elytradev.concrete.inventory.ValidatedInventoryView;
-import com.elytradev.concrete.inventory.ValidatedItemHandlerView;
 import com.elytradev.concrete.inventory.gui.client.ConcreteGui;
 import com.elytradev.friendshipbracelet.proxy.CommonProxy;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -53,21 +48,21 @@ public class FriendshipBracelet {
         MinecraftForge.EVENT_BUS.register(FBRecipes.class);
         MinecraftForge.EVENT_BUS.register(proxy);
         MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(ItemFriendshipBracelet.BRACELET_HOLDER);
+        MinecraftForge.EVENT_BUS.register(ItemFriendshipBracelet.BRACELET_KEYRING);
 
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new IGuiHandler() {
             @Nullable
             @Override
             public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
                 ItemStack stack;
-                if (player.getHeldItemMainhand().getItem() == ItemFriendshipBracelet.BRACELET_HOLDER) {
+                if (player.getHeldItemMainhand().getItem() == ItemFriendshipBracelet.BRACELET_KEYRING) {
                     stack = player.getHeldItemMainhand();
-                } else if (player.getHeldItemOffhand().getItem() == ItemFriendshipBracelet.BRACELET_HOLDER) {
+                } else if (player.getHeldItemOffhand().getItem() == ItemFriendshipBracelet.BRACELET_KEYRING) {
                     stack = player.getHeldItemOffhand();
                 } else return null;
                 IItemHandler storage = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
                 if (storage==null | !(storage instanceof ConcreteItemStorage)) return null;
-                return new BraceletHolderContainer(
+                return new BraceletKeyringContainer(
                         player.inventory, new ValidatedInventoryView((ConcreteItemStorage)storage));
             }
 
@@ -76,16 +71,16 @@ public class FriendshipBracelet {
             @SideOnly(Side.CLIENT)
             public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
                 ItemStack stack;
-                if (player.getHeldItemMainhand().getItem() == ItemFriendshipBracelet.BRACELET_HOLDER) {
+                if (player.getHeldItemMainhand().getItem() == ItemFriendshipBracelet.BRACELET_KEYRING) {
                     stack = player.getHeldItemMainhand();
-                } else if (player.getHeldItemOffhand().getItem() == ItemFriendshipBracelet.BRACELET_HOLDER) {
+                } else if (player.getHeldItemOffhand().getItem() == ItemFriendshipBracelet.BRACELET_KEYRING) {
                     stack = player.getHeldItemOffhand();
                 } else return null;
                 IItemHandler storage = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
                 if (storage==null | !(storage instanceof ConcreteItemStorage)) return null;
-                BraceletHolderContainer braceletHolderContainer = new BraceletHolderContainer(
+                BraceletKeyringContainer braceletKeyringContainer = new BraceletKeyringContainer(
                         player.inventory, new ValidatedInventoryView((ConcreteItemStorage)storage));
-                return new ConcreteGui(braceletHolderContainer);
+                return new ConcreteGui(braceletKeyringContainer);
             }
         });
     }
