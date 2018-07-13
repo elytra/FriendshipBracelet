@@ -178,6 +178,8 @@ public class ItemBraceletKeyring extends Item {
             ItemStack bracelet = inv.getStackInSlot(0);
             if (!bracelet.isEmpty() && bracelet.hasTagCompound()) {
                 tooltip.add(I18n.format("tooltip.fb.keyring", bracelet.getDisplayName()));
+            } else {
+                tooltip.add(I18n.format("tooltip.fb.keyring_blank"));
             }
         }
     }
