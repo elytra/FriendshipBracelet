@@ -10,6 +10,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -41,6 +42,11 @@ public class ItemBraceletKeyring extends Item {
         setRegistryName(name);
         this.maxStackSize = 1;
         this.tag = new NBTTagCompound();
+    }
+
+    @Override
+    public EnumAction getItemUseAction(ItemStack stack) {
+        return EnumAction.BOW;
     }
 
     @SubscribeEvent
@@ -137,6 +143,7 @@ public class ItemBraceletKeyring extends Item {
                 player.attemptTeleport(to.posX, to.posY, to.posZ);
                 player.playSound(SoundEvents.BLOCK_PORTAL_TRAVEL, 1f, 1f);
                 player.getCooldownTracker().setCooldown(this, 300);
+                player.getCooldownTracker().setCooldown(ItemFriendshipBracelet.FRIENDSHIP_BRACELET, 300);
             }
             else {
                 player.sendStatusMessage(new TextComponentTranslation("msg.fb.notAccepting"), true);

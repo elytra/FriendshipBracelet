@@ -101,6 +101,7 @@ public class ItemFriendshipBracelet extends Item implements IBauble {
                 player.attemptTeleport(to.posX, to.posY, to.posZ);
                 player.playSound(SoundEvents.BLOCK_PORTAL_TRAVEL, 1f, 1f);
                 player.getCooldownTracker().setCooldown(this, 300);
+                player.getCooldownTracker().setCooldown(BRACELET_KEYRING, 300);
             }
             else {
                 player.sendStatusMessage(new TextComponentTranslation("msg.fb.notAccepting"), true);
