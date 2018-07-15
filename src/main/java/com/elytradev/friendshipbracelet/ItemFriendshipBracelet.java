@@ -28,7 +28,7 @@ public class ItemFriendshipBracelet extends Item implements IBauble {
 
     public ItemFriendshipBracelet() {
         this.name = "friendship_bracelet";
-        setUnlocalizedName(name);
+        setTranslationKey(name);
         setRegistryName(name);
         this.maxStackSize = 1;
     }

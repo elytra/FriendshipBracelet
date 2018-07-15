@@ -38,7 +38,7 @@ public class ItemBraceletKeyring extends Item {
 
     public ItemBraceletKeyring() {
         this.name = "bracelet_keyring";
-        setUnlocalizedName(name);
+        setTranslationKey(name);
         setRegistryName(name);
         this.maxStackSize = 1;
         this.tag = new NBTTagCompound();
@@ -61,7 +61,7 @@ public class ItemBraceletKeyring extends Item {
                                 (it) -> (it.getItem() == ItemFriendshipBracelet.FRIENDSHIP_BRACELET),
                                 (it) -> (it.getItem() == ItemFriendshipBracelet.FRIENDSHIP_BRACELET),
                                 (it) -> (it.getItem() == ItemFriendshipBracelet.FRIENDSHIP_BRACELET))
-                        .withName(ItemFriendshipBracelet.BRACELET_KEYRING.getUnlocalizedName()+".name");
+                        .withName(ItemFriendshipBracelet.BRACELET_KEYRING.getTranslationKey()+".name");
 
                 inv.listen(() -> {
                     if (!stack.hasTagCompound()) stack.setTagCompound(new NBTTagCompound());

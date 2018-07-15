@@ -20,13 +20,10 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void postInit() {
-        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
-            @Override
-            public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-                if (stack.getItem() != ItemFriendshipBracelet.FRIENDSHIP_BRACELET || stack.getTagCompound() == null) return -1;
-                String index = "StringColor"+tintIndex;
-                return getDyeColor(stack, index);
-            }
+        Minecraft.getMinecraft().getItemColors().registerItemColorHandler((stack, tintIndex) -> {
+            if (stack.getItem() != ItemFriendshipBracelet.FRIENDSHIP_BRACELET || stack.getTagCompound() == null) return -1;
+            String index = "StringColor"+tintIndex;
+            return getDyeColor(stack, index);
         }, ItemFriendshipBracelet.FRIENDSHIP_BRACELET);
     }
 
