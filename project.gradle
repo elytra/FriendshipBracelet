@@ -27,14 +27,13 @@ if (!ext.early) {
 repositories {
 	// the skeleton already defines mavenCentral, jcenter, and the Elytra repo
 	// will also have Shadowfacts' maven if the language is set to kotlin
-    ivy {
-        //Resolves baubles and jankson
-        name "endless.blue dependency mirror";
-        artifactPattern "https://endless.blue/files/ivy/[module]-[revision].[ext]"
-    }
+	flatDir {
+		// baubles in /libs
+		dirs 'libs'
+	}
 }
 
 dependencies {
-    compile name: "Baubles", version: "1.12-1.5.2"
+    deobfCompile name: "Baubles-1.12-1.5.2"
 }
 }

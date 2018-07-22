@@ -4,6 +4,7 @@ import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
 import baubles.api.IBauble;
 import baubles.api.cap.IBaublesItemHandler;
+import com.elytradev.concrete.inventory.ConcreteItemStorage;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,6 +19,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.UUID;
@@ -46,6 +48,11 @@ public class ItemFriendshipBracelet extends Item implements IBauble {
     @Override
     public EnumAction getItemUseAction(ItemStack stack) {
         return EnumAction.BOW;
+    }
+
+    @Override
+    public BaubleType getBaubleType(ItemStack itemStack) {
+        return BaubleType.RING;
     }
 
     @Override
@@ -97,7 +104,7 @@ public class ItemFriendshipBracelet extends Item implements IBauble {
         MinecraftServer server = world.getMinecraftServer();
         if (!world.isRemote) {
             EntityPlayer to = server.getPlayerList().getPlayerByUUID(id);
-            if (isAcceptingTeleports(to)) {
+            if (isAcceptingTeleports(to, player)) {
                 player.attemptTeleport(to.posX, to.posY, to.posZ);
                 player.playSound(SoundEvents.BLOCK_PORTAL_TRAVEL, 1f, 1f);
                 player.getCooldownTracker().setCooldown(this, 300);
@@ -110,17 +117,31 @@ public class ItemFriendshipBracelet extends Item implements IBauble {
         return stack;
     }
 
-    @Override
-    public BaubleType getBaubleType(ItemStack itemStack) {
-        return BaubleType.RING;
-    }
-
-    private boolean isAcceptingTeleports(EntityPlayer player) {
-        IBaublesItemHandler baubles = BaublesApi.getBaublesHandler(player);
-        for(int i = 0; i < baubles.getSlots(); i++) {
+    private boolean isAcceptingTeleports(EntityPlayer to, EntityPlayer from) {
+        IBaublesItemHandler baubles = BaublesApi.getBaublesHandler(to);
+        for (int i = 0; i < baubles.getSlots(); i++) {
             ItemStack stackInSlot = baubles.getStackInSlot(i);
             if (!stackInSlot.isEmpty()) {
                 if (baubles.getStackInSlot(i).getItem().equals(FRIENDSHIP_BRACELET)) return true;
+                else if (baubles.getStackInSlot(i).getItem().equals(BRACELET_KEYRING)) {
+                    return hasKeyringMatch(from, stackInSlot);
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean hasKeyringMatch(EntityPlayer player, ItemStack keyring) {
+        UUID playerID = player.getPersistentID();
+        if (!keyring.hasTagCompound()) return false;
+        ConcreteItemStorage inv = (ConcreteItemStorage)keyring.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        if (inv == null) return false;
+        for (int i = 0; i < 6; i++) {
+            ItemStack bracelet = inv.getStackInSlot(i);
+            if (!bracelet.isEmpty() && bracelet.hasTagCompound()) {
+                if (!bracelet.getTagCompound().hasKey("PlayerIDMost")) return false;
+                UUID braceletID = bracelet.getTagCompound().getUniqueId("PlayerID");
+                if (braceletID.equals(playerID)) return true;
             }
         }
         return false;

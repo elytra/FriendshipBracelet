@@ -1,9 +1,12 @@
 package com.elytradev.friendshipbracelet;
 
+import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
+import baubles.api.IBauble;
 import baubles.api.cap.IBaublesItemHandler;
 import com.elytradev.concrete.inventory.ConcreteItemStorage;
 import com.elytradev.concrete.inventory.ValidatedItemHandlerView;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -31,7 +34,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-public class ItemBraceletKeyring extends Item {
+public class ItemBraceletKeyring extends Item implements IBauble {
 
     public String name;
     public NBTTagCompound tag;
@@ -47,6 +50,16 @@ public class ItemBraceletKeyring extends Item {
     @Override
     public EnumAction getItemUseAction(ItemStack stack) {
         return EnumAction.BOW;
+    }
+
+    @Override
+    public BaubleType getBaubleType(ItemStack itemStack) {
+        return BaubleType.TRINKET;
+    }
+
+    @Override
+    public boolean canEquip(ItemStack stack, EntityLivingBase player) {
+        return true;
     }
 
     @SubscribeEvent
@@ -139,7 +152,7 @@ public class ItemBraceletKeyring extends Item {
         MinecraftServer server = world.getMinecraftServer();
         if (!world.isRemote) {
             EntityPlayer to = server.getPlayerList().getPlayerByUUID(id);
-            if (isAcceptingTeleports(to)) {
+            if (isAcceptingTeleports(to, player)) {
                 player.attemptTeleport(to.posX, to.posY, to.posZ);
                 player.playSound(SoundEvents.BLOCK_PORTAL_TRAVEL, 1f, 1f);
                 player.getCooldownTracker().setCooldown(this, 300);
@@ -152,12 +165,31 @@ public class ItemBraceletKeyring extends Item {
         return stack;
     }
 
-    private boolean isAcceptingTeleports(EntityPlayer player) {
-        IBaublesItemHandler baubles = BaublesApi.getBaublesHandler(player);
-        for(int i = 0; i < baubles.getSlots(); i++) {
+    private boolean isAcceptingTeleports(EntityPlayer to, EntityPlayer from) {
+        IBaublesItemHandler baubles = BaublesApi.getBaublesHandler(to);
+        for (int i = 0; i < baubles.getSlots(); i++) {
             ItemStack stackInSlot = baubles.getStackInSlot(i);
             if (!stackInSlot.isEmpty()) {
                 if (baubles.getStackInSlot(i).getItem().equals(ItemFriendshipBracelet.FRIENDSHIP_BRACELET)) return true;
+                else if (baubles.getStackInSlot(i).getItem().equals(ItemFriendshipBracelet.BRACELET_KEYRING)) {
+                    return hasKeyringMatch(from, stackInSlot);
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean hasKeyringMatch(EntityPlayer player, ItemStack keyring) {
+        UUID playerID = player.getPersistentID();
+        if (!keyring.hasTagCompound()) return false;
+        ConcreteItemStorage inv = (ConcreteItemStorage)keyring.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        if (inv == null) return false;
+        for (int i = 0; i < 6; i++) {
+            ItemStack bracelet = inv.getStackInSlot(i);
+            if (!bracelet.isEmpty() && bracelet.hasTagCompound()) {
+                if (!bracelet.getTagCompound().hasKey("PlayerIDMost")) return false;
+                UUID braceletID = bracelet.getTagCompound().getUniqueId("PlayerID");
+                if (braceletID.equals(playerID)) return true;
             }
         }
         return false;
@@ -188,6 +220,12 @@ public class ItemBraceletKeyring extends Item {
             } else {
                 tooltip.add(I18n.format("tooltip.fb.keyring_blank"));
             }
+        }
+        if (!GuiScreen.isShiftKeyDown()) {
+            tooltip.add(I18n.format("preview.fb.keyring"));
+        } else {
+            tooltip.add(I18n.format("tooltip.fb.keyring.0"));
+            tooltip.add(I18n.format("tooltip.fb.keyring.1"));
         }
     }
 
