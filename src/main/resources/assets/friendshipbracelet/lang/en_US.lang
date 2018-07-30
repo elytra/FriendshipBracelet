@@ -13,6 +13,7 @@ preview.fb.keyring=Hold §dSHIFT §7for info
 #messages
 msg.fb.notOnline=Player not online!
 msg.fb.notAccepting=Player not accepting teleports!
+msg.fb.teleportTo=%s teleported to you.
 
 #misc
 itemGroup.friendshipbracelet=Friendship Bracelets

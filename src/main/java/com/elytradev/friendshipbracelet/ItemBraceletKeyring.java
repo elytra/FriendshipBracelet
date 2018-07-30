@@ -153,8 +153,11 @@ public class ItemBraceletKeyring extends Item implements IBauble {
         if (!world.isRemote) {
             EntityPlayer to = server.getPlayerList().getPlayerByUUID(id);
             if (isAcceptingTeleports(to, player)) {
+                player.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1f, 0.8f);
+                to.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 0.75f, 0.8f);
+                to.playSound(SoundEvents.ENTITY_PLAYER_LEVELUP, 0.75f, 0.9f);
                 player.attemptTeleport(to.posX, to.posY, to.posZ);
-                player.playSound(SoundEvents.BLOCK_PORTAL_TRAVEL, 1f, 1f);
+                to.sendStatusMessage(new TextComponentTranslation("msg.fb.teleportTo", player.getName()), true);
                 player.getCooldownTracker().setCooldown(this, 300);
                 player.getCooldownTracker().setCooldown(ItemFriendshipBracelet.FRIENDSHIP_BRACELET, 300);
             }
