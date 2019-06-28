@@ -34,11 +34,12 @@ public class BraceletKeyringController extends CottonScreenController {
         panel.add(slot3, 72, 89);
         panel.add(slot4, 36, 71);
         panel.add(slot5, 36, 35);
+        panel.validate(this);
     }
 
     @Override
     public int getCraftingResultSlotIndex() {
-        return 0;
+        return -1;
     }
 
     @Override

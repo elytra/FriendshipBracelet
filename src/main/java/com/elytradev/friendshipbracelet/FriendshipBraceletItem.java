@@ -118,6 +118,7 @@ public class FriendshipBraceletItem extends Item implements IWearablesItem {
                 slot.set(stack.copy());
                 stack.decrement(1);
                 player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 1f, 1f);
+                return;
             }
         }
     }
