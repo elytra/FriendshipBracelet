@@ -1,0 +1,26 @@
+{
+  "type": "friendshipbracelet:friendship_bracelet",
+  "pattern": [
+    "###",
+    "SSS",
+    "SES"
+  ],
+  "key": {
+    "#": {
+      "tag": "c:dye"
+    },
+    "S": {
+      "item": "minecraft:string"
+    },
+    "E": {
+      "item": "minecraft:ender_pearl"
+    }
+  },
+  "result": {
+    "item": "friendshipbracelet:friendship_bracelet",
+    "count": 1
+  },
+  "color_left": 0,
+  "color_middle": 0,
+  "color_right": 0
+}

@@ -1,0 +1,17 @@
+{
+    "item.friendshipbracelet.friendship_bracelet": "Friendship Bracelet",
+    "item.friendship_bracelet.rename": "%s's Friendship Bracelet",
+    "item.friendshipbracelet.bracelet_keyring": "Bracelet Keyring",
+
+    "tooltip.fb.keyring.0": "Teleports you to the owner of",
+    "tooltip.fb.keyring.1": "the top slot's bracelet.",
+    "tooltip.fb.keyring.2": "Equip to let only owners of",
+    "tooltip.fb.keyring.3": "bracelets in the keyring teleport to you.",
+    "tooltip.fb.keyring": "Currently selected: %s",
+    "tooltip.fb.keyring_blank": "No bracelet in top slot",
+    "preview.fb.keyring": "Hold §dSHIFT §7for info",
+
+    "msg.fb.notOnline": "Player not online!",
+    "msg.fb.notAccepting": "Player not accepting teleports!",
+    "msg.fb.teleportTo": "%s teleported to you."
+}

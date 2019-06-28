@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "friendshipbracelet",
+  "version": "$version",
+
+  "name": "Friendship Bracelet",
+  "icon": "assets/friendshipbracelet/icon.png",
+  "description": "Make friends and teleport to them!",
+  "licence": "LGPL v3",
+  "contact": {
+    "sources": "https://github.com/elytra/friendshipbracelet"
+  },
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.elytradev.friendshipbracelet.FriendshipBracelet"
+    ],
+    "client": [
+      "com.elytradev.friendshipbracelet.FriendshipBraceletClient"
+    ]
+  },
+  "requires": {
+    "fabricloader": ">=0.4.0",
+    "fabric": "*",
+    "cotton": "*"
+  }
+}
