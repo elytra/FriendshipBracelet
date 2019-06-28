@@ -37,7 +37,7 @@ public class BraceletKeyringItem extends Item implements IWearablesItem {
 
     @Override
     public boolean canEquip(IWearablesSlot slot, ItemStack stack) {
-        return (!slot.getSlotType().matches(FriendshipBracelet.NECKLACE));
+        return true;
     }
 
     public static DefaultedList<ItemStack> getInventory(ItemStack keyring) {

@@ -16,9 +16,6 @@ public class FriendshipBracelet implements ModInitializer {
     public static final Item FRIENDSHIP_BRACELET = register("friendship_bracelet", new FriendshipBraceletItem());
     public static final Item BRACELET_KEYRING = register("bracelet_keyring", new BraceletKeyringItem());
 
-    public static final WearablesSlotType RING = new WearablesSlotType("arms/fingers");
-    public static final WearablesSlotType NECKLACE = new WearablesSlotType("chest/neck");
-
     public static Item register(String name, Item item) {
         return Registry.register(Registry.ITEM, new Identifier(MOD_ID, name), item);
     }

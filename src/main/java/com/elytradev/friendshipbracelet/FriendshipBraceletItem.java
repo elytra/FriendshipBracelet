@@ -16,6 +16,7 @@ import net.minecraft.util.*;
 import net.minecraft.world.World;
 
 import java.util.Iterator;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -47,7 +48,7 @@ public class FriendshipBraceletItem extends Item implements IWearablesItem {
             UUID id = tag.getUuid("PlayerID");
             if (id.equals(player.getUuid())) {
                 equipWearable(world, player, hand);
-                return new TypedActionResult<>(ActionResult.FAIL, stack);
+                return new TypedActionResult<>(ActionResult.SUCCESS, stack);
             } else if (server.getPlayerManager().getPlayer(id) == null) {
                 player.addChatMessage(new TranslatableText("msg.fb.notOnline"), true);
                 return new TypedActionResult<>(ActionResult.FAIL, stack);
@@ -103,7 +104,6 @@ public class FriendshipBraceletItem extends Item implements IWearablesItem {
 
     @Override
     public boolean canEquip(IWearablesSlot slot, ItemStack stack) {
-        if (!slot.getSlotType().matches(FriendshipBracelet.RING)) return false;
         CompoundTag tag = stack.getOrCreateTag();
         if (!tag.containsKey("PlayerIDMost")) return false;
         return slot.getEntity().getUuid().equals(tag.getUuid("PlayerID"));
@@ -112,14 +112,12 @@ public class FriendshipBraceletItem extends Item implements IWearablesItem {
     public void equipWearable(World world, PlayerEntity player, Hand hand) {
         if (world.isClient) return;
         ItemStack stack = player.getStackInHand(hand);
-        Stream<IWearablesSlot> slots = IWearablesEntity.from(player).getEquippedWearables();
-        for (Iterator<IWearablesSlot> it = slots.iterator(); it.hasNext(); ) {
-            IWearablesSlot slot = it.next();
-            if (canEquip(slot, stack)) {
+        Set<IWearablesSlot> slots = IWearablesEntity.from(player).getValidSlots(this);
+        for (IWearablesSlot slot : slots) {
+            if (slot.canEquip(stack)) {
                 slot.set(stack.copy());
                 stack.decrement(1);
                 player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 1f, 1f);
-                return;
             }
         }
     }
