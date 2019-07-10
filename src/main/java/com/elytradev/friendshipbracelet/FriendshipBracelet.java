@@ -4,11 +4,9 @@ import com.elytradev.friendshipbracelet.container.BraceletKeyringController;
 import com.elytradev.friendshipbracelet.container.InventoryWrapper;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
-import net.mcft.copy.wearables.api.WearablesSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-
 
 public class FriendshipBracelet implements ModInitializer {
     public static final String MOD_ID = "friendshipbracelet";

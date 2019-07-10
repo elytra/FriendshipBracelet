@@ -53,7 +53,8 @@ public class BraceletKeyringItem extends Item implements IWearablesItem {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
         ItemStack stack = player.getStackInHand(hand);
         if(!world.isClient) {
-            if (player.isSneaking()) {
+            //only allow opening in off hand to prevent inv desyncs
+            if (player.isSneaking() && hand == Hand.OFF_HAND) {
                 ContainerProviderRegistry.INSTANCE.openContainer(new Identifier(FriendshipBracelet.MOD_ID, "keyring"), player, buf -> buf.writeItemStack(stack));
             } else {
                 if (stack.getItem() != FriendshipBracelet.BRACELET_KEYRING) return new TypedActionResult<>(ActionResult.FAIL, stack);
@@ -131,7 +132,8 @@ public class BraceletKeyringItem extends Item implements IWearablesItem {
         DefaultedList<ItemStack> inv = getInventory(stack);
         ItemStack bracelet = inv.get(0);
         if (!bracelet.isEmpty()) {
-            tooltip.add(new TranslatableText("tooltip.fb.keyring", bracelet.getName()));
+            tooltip.add(new TranslatableText("tooltip.fb.keyring"));
+            tooltip.add(new TranslatableText("tooltip.fb.keyring.name", bracelet.getName()));
         } else {
             tooltip.add(new TranslatableText("tooltip.fb.keyring_blank"));
         }
@@ -142,6 +144,7 @@ public class BraceletKeyringItem extends Item implements IWearablesItem {
             tooltip.add(new TranslatableText("tooltip.fb.keyring.1").formatted(Formatting.GRAY));
             tooltip.add(new TranslatableText("tooltip.fb.keyring.2").formatted(Formatting.GRAY));
             tooltip.add(new TranslatableText("tooltip.fb.keyring.3").formatted(Formatting.GRAY));
+            tooltip.add(new TranslatableText("tooltip.fb.keyring.4").formatted(Formatting.GRAY));
         }
     }
 

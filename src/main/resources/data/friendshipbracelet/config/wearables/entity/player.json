@@ -1,0 +1,7 @@
+{
+  "appliesTo": [ "minecraft:player" ],
+  "mergeStrategy": "COMBINE",
+  "slots": {
+    "wrists/bracelet": { "order": 800, "SlotCount":  2}
+  }
+}

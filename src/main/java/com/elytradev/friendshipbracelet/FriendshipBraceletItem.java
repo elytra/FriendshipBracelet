@@ -1,10 +1,8 @@
 package com.elytradev.friendshipbracelet;
 
-import net.fabricmc.fabric.api.util.NbtType;
 import net.mcft.copy.wearables.api.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventories;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -15,9 +13,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 
-import java.util.Iterator;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class FriendshipBraceletItem extends Item implements IWearablesItem {
@@ -112,7 +108,7 @@ public class FriendshipBraceletItem extends Item implements IWearablesItem {
     public void equipWearable(World world, PlayerEntity player, Hand hand) {
         if (world.isClient) return;
         ItemStack stack = player.getStackInHand(hand);
-        Set<IWearablesSlot> slots = IWearablesEntity.from(player).getValidSlots(this);
+        Collection<IWearablesSlot> slots = IWearablesEntity.from(player).getValidSlots(this);
         for (IWearablesSlot slot : slots) {
             if (slot.canEquip(stack)) {
                 slot.set(stack.copy());

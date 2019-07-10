@@ -1,4 +1,4 @@
 {
-  "friendshipbracelet:friendship_bracelet" : { "validSlots": [ "fingers/ring" ] },
-  "friendshipbracelet:bracelet_keyring" : { "validSlots": [ "neck/amulet" ] }
+  "friendshipbracelet:friendship_bracelet" : { "validSlots": [ "fingers/ring", "wrists/bracelet" ] },
+  "friendshipbracelet:bracelet_keyring" : { "validSlots": [ "neck/amulet", "waist/belt" ] }
 }

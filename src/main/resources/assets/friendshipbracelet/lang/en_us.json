@@ -7,7 +7,9 @@
     "tooltip.fb.keyring.1": "the top slot's bracelet.",
     "tooltip.fb.keyring.2": "Equip to let only owners of",
     "tooltip.fb.keyring.3": "bracelets in the keyring teleport to you.",
-    "tooltip.fb.keyring": "Currently selected: %s",
+    "tooltip.fb.keyring.4": "Hold in offhand to open.",
+    "tooltip.fb.keyring": "Currently selected:",
+    "tooltip.fb.keyring.name": "  %s",
     "tooltip.fb.keyring_blank": "No bracelet in top slot",
     "preview.fb.keyring": "Hold §dSHIFT §7for info",
 

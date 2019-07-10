@@ -19,6 +19,20 @@ public class InventoryWrapper implements Inventory {
 	private final int size;
 	public final DefaultedList<ItemStack> stackList;
 	private ItemStack underlying;
+	private List<InventoryListener> listeners;
+
+	public void addListener(InventoryListener listener) {
+		if (this.listeners == null) {
+			this.listeners = Lists.newArrayList();
+		}
+
+		this.listeners.add(listener);
+	}
+
+	public void removeListener(InventoryListener listener) {
+		this.listeners.remove(listener);
+	}
+
 	public InventoryWrapper(ItemStack keyring) {
 		this.size = 6;
 		this.underlying = keyring;
@@ -90,6 +104,11 @@ public class InventoryWrapper implements Inventory {
 	@Override
 	public void markDirty() {
 		underlying.setTag(Inventories.toTag(new CompoundTag(), stackList));
+		if (listeners != null) {
+			for (InventoryListener listener : listeners) {
+				listener.onInvChange(this);
+			}
+		}
 	}
 
 	@Override
